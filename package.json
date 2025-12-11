@@ -1,0 +1,14 @@
+{
+  "name": "performance-testing-framework-k6",
+  "version": "1.0.0",
+  "description": "A modular performance testing framework using k6 with multiple scenarios, HTML reports, and GitHub Actions integration.",
+  "scripts": {
+    "test:load": "k6 run src/scenarios/load.test.js",
+    "test:stress": "k6 run src/scenarios/stress.test.js",
+    "test:spike": "k6 run src/scenarios/spike.test.js",
+    "test:soak": "k6 run src/scenarios/soak.test.js",
+    "test:flow": "k6 run src/scenarios/realistic-flow.test.js"
+  },
+  "author": "Darko K",
+  "license": "MIT"
+}

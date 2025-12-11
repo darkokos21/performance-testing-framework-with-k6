@@ -1,0 +1,35 @@
+name: k6 Performance Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  k6-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo apt update
+          sudo apt install -y gnupg software-properties-common
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C780A7C9
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt update
+          sudo apt install -y k6
+
+      - name: Run Load Test
+        run: k6 run src/scenarios/load.test.js --out json=results/summary.json
+      
+      - name: Run Realistic Flow Test
+        run: k6 run src/scenarios/realistic-flow.test.js
+
+      - name: Upload Performance Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-report
+          path: results/
+

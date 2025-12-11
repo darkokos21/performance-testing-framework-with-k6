@@ -1,0 +1,6 @@
+[
+  { "email": "eve.holt@reqres.in", "password": "citylights123" },
+  { "email": "charles.morris@reqres.in", "password": "samplepass456" },
+  { "email": "emma.wong@reqres.in", "password": "securepass789" },
+  { "email": "george.bluth@reqres.in", "password": "letmein123" }
+]

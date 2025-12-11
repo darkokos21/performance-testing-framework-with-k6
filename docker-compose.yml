@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  k6:
+    image: grafana/k6
+    volumes:
+      - ./src:/scripts
+    command: run /scripts/scenarios/load.test.js
