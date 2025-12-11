@@ -12,23 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install k6 (modern method – no apt-key)
+      - name: Install k6 (modern key installation)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y curl gpg
-
-          # Download and install the official k6 signing key
-          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
-
-          # Add the official k6 APT repository
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
-            | sudo tee /etc/apt/sources.list.d/k6.list
-
-          sudo apt-get update
-          sudo apt-get install -y k6
+          sudo apt update
+          sudo apt install -y gnupg software-properties-common curl
+          curl -fsSL https://dl.k6.io/key.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/k6.gpg > /dev/null
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt update
+          sudo apt install -y k6
 
       - name: Run Load Test
-        run: k6 run src/scenarios/load.test.js --out json=results/summary.json
+        run: |
+          mkdir -p results
+          k6 run src/scenarios/load.test.js --out json=results/summary.json
       
       - name: Run Realistic Flow Test
         run: k6 run src/scenarios/realistic-flow.test.js
