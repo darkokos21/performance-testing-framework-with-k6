@@ -1,6 +1,4 @@
 [
-  { "email": "eve.holt@reqres.in", "password": "citylights123" },
-  { "email": "charles.morris@reqres.in", "password": "samplepass456" },
-  { "email": "emma.wong@reqres.in", "password": "securepass789" },
-  { "email": "george.bluth@reqres.in", "password": "letmein123" }
+  { "id": 1, "name": "Leanne Graham", "email": "Sincere@april.biz" },
+  { "id": 2, "name": "Ervin Howell", "email": "Shanna@melissa.tv" }
 ]
