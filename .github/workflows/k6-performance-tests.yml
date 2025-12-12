@@ -12,20 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install k6 (modern key installation)
+      - name: Install k6
         run: |
           sudo apt update
           sudo apt install -y gnupg software-properties-common curl
-          curl -fsSL https://dl.k6.io/key.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/k6.gpg > /dev/null
+          curl -fsSL https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC780A7C9 | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/k6.gpg > /dev/null
           echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
           sudo apt update
           sudo apt install -y k6
 
+      - name: Create results directory
+        run: mkdir -p results
+
       - name: Run Load Test
-        run: |
-          mkdir -p results
-          k6 run src/scenarios/load.test.js --out json=results/summary.json
-      
+        run: k6 run src/scenarios/load.test.js --out json=results/summary.json
+
       - name: Run Realistic Flow Test
         run: k6 run src/scenarios/realistic-flow.test.js
 
