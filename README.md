@@ -196,7 +196,7 @@ k6 run src/scenarios/realistic-flow.test.js
 
 ### Override Base URL:
 ```
-BASE_URL=https://api.myapp.com k6 run src/scenarios/load.test.js
+BASE_URL=https://fakerestapi.azurewebsites.net/api/v1 k6 run src/scenarios/load.test.js
 ```
 
 ---
