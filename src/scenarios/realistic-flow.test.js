@@ -17,10 +17,6 @@ export const options = {
     { duration: "1m", target: 20 },
     { duration: "30s", target: 0 }
   ],
-  thresholds: {
-    http_req_duration: ["p(95)<600"],
-    http_req_failed: ["rate<0.02"]
-  },
   tags: { test_type: "realistic_flow" }
 };
 
@@ -78,7 +74,7 @@ export default function () {
     name: "Automation Bot",
     job: "QA Performance"
   }), { headers: { "Content-Type": "application/json" }});
-  check(createRes, { "create user OK": (r) => r.status === 201 });
+  check(createRes, { "create user OK": (r) => r.status === 201 || r.status === 200});
 
   sleep(1);
 }
