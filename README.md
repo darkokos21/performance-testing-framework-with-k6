@@ -66,12 +66,12 @@ performance-testing-framework-k6/
 The framework defaults to a publicly accessible testing API:
 
 ```
-https://reqres.in/api
+https://fakerestapi.azurewebsites.net/api/v1
 ```
 
 You can override it:
 ```
-BASE_URL=https://myapp.com/api k6 run src/scenarios/load.test.js
+BASE_URL=https://fakerestapi.azurewebsites.net/api/v1 k6 run src/scenarios/load.test.js
 ```
 
 ---
@@ -100,6 +100,8 @@ A real-world multi-step user flow:
 - Validate responses + token usage
 
 This scenario shows **production-like user behavior** and represents a strong addition to your portfolio.
+
+## ⚠️ Note: Thresholds are omitted in CI runs for demo purposes because the tests use public APIs, which may occasionally fail independently of the test logic. Thresholds can be re-enabled for internal/stable endpoints.
 
 ---
 
