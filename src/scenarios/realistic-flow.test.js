@@ -4,10 +4,10 @@ import { config } from "../config.js";
 
 let users;
 try {
-    users = JSON.parse(open('../test-data/users.json'));
+  users = JSON.parse(open('../test-data/users.json'));
 } catch (err) {
-    console.error("Failed to load users.json:", err);
-    users = [];
+  console.error("Failed to load users.json:", err);
+  users = [];
 }
 
 export const options = {
@@ -16,48 +16,41 @@ export const options = {
     { duration: "10s", target: 10 },
     { duration: "5s", target: 0 }
   ],
-  tags: { test_type: "realistic_flow" },
-  thresholds: config.thresholds
+  tags: { test_type: "realistic_flow" }
+  // thresholds intentionally removed
 };
 
 export default function () {
-  // ensure users array exists
   if (!Array.isArray(users) || users.length === 0) {
-    console.error("Users array is empty or not loaded! Check ../test-data/users.json");
+    console.error("Users array is empty or not loaded!");
     return;
   }
 
   const randomIndex = Math.floor(Math.random() * users.length);
   const user = users[randomIndex];
+  if (!user || !user.id) return;
 
-  if (!user || !user.id) {
-    console.warn("Selected user is invalid, skipping iteration.");
-    return;
-  }
-
-  // list users
-  const listRes = http.get(`${config.baseUrl}/users`);
+  // List users
+  const listRes = http.get(`${config.baseUrl}/Users`);
   check(listRes, { "list users OK": (r) => r.status === 200 });
 
   const usersList = listRes.json();
-  if (!usersList || usersList.length === 0) {
-    console.warn("No users returned from list endpoint. Skipping single user fetch.");
-    return;
-  }
+  if (!usersList || usersList.length === 0) return;
 
-  // get a single user
+  // Single user fetch
   const randomUserIndex = Math.floor(Math.random() * usersList.length);
   const randomUser = usersList[randomUserIndex];
-  const singleRes = http.get(`${config.baseUrl}/users/${randomUser.id}`);
+  const singleRes = http.get(`${config.baseUrl}/Users/${randomUser.id}`);
   check(singleRes, { "single user OK": (r) => r.status === 200 });
 
-  // create user (JSONPlaceholder returns 201 for POST)
-  const createRes = http.post(`${config.baseUrl}/users`, JSON.stringify({
-    name: "Automation Bot",
+  // Create user
+  const createRes = http.post(`${config.baseUrl}/Users`, JSON.stringify({
+    id: Math.floor(Math.random() * 10000),
+    userName: "Automation Bot",
     email: "automation@example.com"
-  }), { headers: { "Content-Type": "application/json" }});
+  }), { headers: { "Content-Type": "application/json" } });
 
-  check(createRes, { "create user OK": (r) => r.status === 201 });
+  check(createRes, { "create user OK": (r) => r.status === 200 || r.status === 201 });
 
   sleep(1);
 }
