@@ -1,5 +1,5 @@
 export const config = {
-  baseUrl: __ENV.BASE_URL || "https://reqres.in/api",
+  baseUrl: __ENV.BASE_URL || "https://jsonplaceholder.typicode.com",
   stages: {
     load: [
       { duration: "5s", target: 10 },
